@@ -5,8 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFistRaised, faHand, faHandBackFist, faHandFist, faHandScissors, faL } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { toast , Toaster} from 'react-hot-toast'
+import { io } from 'socket.io-client'
 
-
+let socket;
 export default function Play() {
 
   const choices = ['rock', 'paper', 'scissors'];
@@ -16,7 +17,8 @@ export default function Play() {
   const[result,setResult] = useState('')
   const[isPlaying,setIsPlaying] = useState(false)
   const[isFinished,setIsFinished] = useState(false)
-
+  const [players, setPlayers] = useState([]);
+    
   useEffect(() => {
     if (isFinished) {
       setResult(getResult());
@@ -26,6 +28,21 @@ export default function Play() {
     }  
   }, [isFinished,result]);
 
+  useEffect(()=>{
+    socketInitializer()
+  },[])
+
+  const socketInitializer = async()=>{
+    socket = io({path:'/api/socket',transports:['websocket','polling']})
+   socket.on('connect', () => {
+     console.log('connected')
+   })
+    socket.on("roomJoined", ({ roomId, players }) => {
+        setPlayers(players);
+        console.log(`Joined room: ${roomId}`);
+        console.log(players)
+      });
+  }
 
   const shoot = ()=>{
 
