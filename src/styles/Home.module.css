@@ -1,0 +1,103 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content:space-around;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+}
+.main h1{
+  font-size: 50px;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: yellow;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 20px;
+  gap: 20px;
+}
+.wrapper .icons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.wrapper .icon{
+  width: 80px;
+  height: 80px;
+  color:#1e1e1e;
+  cursor: pointer;
+  transition: .3s ease-in-out
+}
+.wrapper .icon:hover{
+  transform: translateY(-5px);
+}
+.fist{
+  width: 180px;
+  height: 180px;
+  color:#fff;
+  transition: .3s ease-in-out
+}
+.hands{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.hands .fist:first-child{
+  transform: rotate(90deg);
+}
+.hands .fist:last-child{
+  transform: rotate(-90deg) scaleX(-1);
+  animation: rightHandAnime 1s 3 ease-in;
+}
+
+.wrapper .icon.active{
+  transform: translateY(-5px);
+  color: #fff;
+}
+.wrapper button{
+  background-color: #1e1e1e;
+  color: yellow;
+  border: none;
+  outline: none;
+  padding: 10px 30px;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: .3s ease-in-out
+}
+.wrapper button:active{
+  transform: scale(0.8);
+}
+.leftHandAnime{
+  animation: leftHandAnime 1s 3 ease-in
+}
+@keyframes leftHandAnime {
+  0%{
+    transform: rotate(90deg);
+  }
+  50%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(90deg);
+  }
+}
+@keyframes rightHandAnime {
+  0%{
+    transform: rotate(-90deg) scaleX(-1);
+  }
+  50%{
+    transform: rotate(0deg) scaleX(-1);
+  }
+  100%{
+    transform: rotate(-90deg) scaleX(-1);
+  }
+}
