@@ -6,7 +6,8 @@
   padding: 6rem;
   min-height: 100vh;
 }
-.main h1{
+
+.main h1,.main2 h1{
   font-size: 50px;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
@@ -28,6 +29,15 @@
   align-items: center;
   gap: 10px;
 }
+.wrapper input{
+  outline: none;
+  border: none;
+  font-size: 16px;
+  padding:  20px;
+  border-radius: 10px;
+  background-color: #1e1e1e;
+
+}
 .wrapper .icon{
   width: 80px;
   height: 80px;
@@ -37,6 +47,9 @@
 }
 .wrapper .icon:hover{
   transform: translateY(-5px);
+}
+.wrapper .icon:last-child:hover{
+  transform: translateY(-5px) rotate(90deg) !important;
 }
 .fist{
   width: 180px;
@@ -55,7 +68,6 @@
 }
 .hands .fist:last-child{
   transform: rotate(-90deg) scaleX(-1);
-  animation: rightHandAnime 1s 3 ease-in;
 }
 
 .wrapper .icon.active{
@@ -78,6 +90,9 @@
 }
 .leftHandAnime{
   animation: leftHandAnime 1s 3 ease-in
+}
+.rightHandAnime{
+  animation: rightHandAnime 1s 3 ease-in
 }
 @keyframes leftHandAnime {
   0%{
