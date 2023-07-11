@@ -26,16 +26,21 @@ export default function Play() {
     if (isFinished) {
       setResult(getResult());
       if (result !== '') {
-        toast.success(result)
         if(result === 'You win!'){
             setPlayerScore(prev=>prev + 1)
+            toast.success(result)
         }
-        else  if(result === 'You win!'){
+        else if(result === 'Computer wins!'){
             setCPUscore(prev=>prev + 1)
+
+            toast.error(result)
+        }
+        else{
+            toast(result)
         }
       }  
     }
-  }, [isFinished,result,setResult]);
+  }, [isFinished,result]);
 
 
   const shoot = ()=>{
@@ -85,7 +90,6 @@ export default function Play() {
       return 'You win!'
     }
     else{
-        setCPUscore(prev=>prev + 1)
       return 'Computer wins!'
     }
   }
