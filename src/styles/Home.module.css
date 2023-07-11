@@ -44,6 +44,7 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
 }
 .wrapper input{
   outline: none;
@@ -120,15 +121,10 @@
 
 .reset{
   cursor: pointer;
+  color: teal;
   font-size: 2rem;
 }
-.header{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
+
 @keyframes leftHandAnime {
   0%{
     transform: rotate(90deg);

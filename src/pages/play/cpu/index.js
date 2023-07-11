@@ -104,10 +104,9 @@ export default function Play() {
       <main className={styles.main}>
         <Toaster />
        
-    <div className={styles.header}>
-    <h1>Rock Paper Scissors Shoot!</h1>
-        <FontAwesomeIcon icon={faUndo} onClick={reset} className={styles.reset} />
-    </div>
+
+    <h1>Rock Paper Scissors Shoot! <FontAwesomeIcon icon={faUndo} onClick={reset} className={styles.reset} /></h1>
+
   <div className={styles.scores}>
   <h3>Player {playerScore}</h3>
         <h3>CPU {cpuScore}</h3>
