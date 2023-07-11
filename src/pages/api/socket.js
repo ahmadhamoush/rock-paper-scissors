@@ -14,14 +14,14 @@ export default function SocketHandler(req, res) {
 
   io.on("connection", (socket) => {
     console.log(`Socket connected: ${socket.id}`);
-  
+    socket.userId =socket.id
     // Handle create room event
     socket.on("createRoom", () => {
       const roomId = generateRoomId(); // Generate a unique room ID
       const roomData = { roomId, players: [] };
   
       rooms.set(roomId, roomData); // Store room information
-      console.log(rooms)
+      // console.log(rooms)
   
       socket.join(roomId); // Join the room
       socket.emit("roomCreated", roomId); // Send the room ID to the client
@@ -30,13 +30,14 @@ export default function SocketHandler(req, res) {
     // Handle join room event
     socket.on("joinRoom", (roomId,name) => {
       const roomData = rooms.get(roomId);
-        console.log(rooms)
-        console.log(roomData)
+        // console.log(rooms)
+        // console.log(roomData)
       if (roomData) {
         const { roomId, players } = roomData;
         if (players.length < 2) {
           socket.join(roomId); // Join the room
-          players.push({id:socket.id,name}); // Add the socket ID to the players list
+          let player = {name,id:socket.userId}
+          players.push(player); // Add the socket ID to the players list
   
           // Notify the client that they have successfully joined the room
           socket.emit("roomJoined", { roomId, players });
@@ -51,8 +52,30 @@ export default function SocketHandler(req, res) {
       }
     });
   
+    socket.on('getRoomDetails', (roomId)=>{
+      const roomData = rooms.get(roomId);
+      socket.emit("roomDetails",  roomData );
+    })
+    
     // Handle game events
     socket.on("makeMove", (data) => {
+      const roomData = rooms.get(data.roomId);
+     const{players}=roomData
+     console.log('socket userid',socket.userId)
+
+    if(players.length>1){
+      players.forEach(player=>{
+        console.log('player id',player.id)
+        if(socket.userId === player.id){
+          player.move = data.move
+          player.isPlaying = true
+        }
+      })
+    }
+    else{
+      socket.emit('wait')
+    }
+      console.log(players)
       // Handle game logic here
       // Emit game events to clients in the same room
     });

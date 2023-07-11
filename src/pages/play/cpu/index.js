@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFistRaised, faHand, faHandBackFist, faHandFist, faHandScissors, faL } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { toast , Toaster} from 'react-hot-toast'
-import { io } from 'socket.io-client'
 import { useRouter } from 'next/router'
 
 let socket;
@@ -19,7 +18,6 @@ export default function Play() {
   const[result,setResult] = useState('')
   const[isPlaying,setIsPlaying] = useState(false)
   const[isFinished,setIsFinished] = useState(false)
-  const [players, setPlayers] = useState([]);
     
   useEffect(() => {
     if (isFinished) {
@@ -30,32 +28,6 @@ export default function Play() {
     }  
   }, [isFinished,result]);
 
-  useEffect(()=>{
-    socketInitializer()
-  },[router.query.roomID])
-
-  const socketInitializer = async()=>{
-    socket = io({path:'/api/socket',transports:['websocket','polling']})
-
-      if(router.query.roomID){
-        socket.emit("getRoomDetails", router.query.roomID)
-      }
-      socket.on("roomDetails", ( room ) => {
-        console.log(room)
-        console.log('Room id is: ' + room.roomId)
-      });
-
-         // Handle player joined event
-         socket.on("playerJoined", ({ roomId, players }) => {
-          setPlayers(players);
-          console.log(`Player joined room: ${roomId}`);
-          console.log(players)
-        });
-      
-      socket.on('wait',()=>{
-        alert('Wait for other player to join!')
-      })
-  }
 
   const shoot = ()=>{
 
@@ -63,20 +35,19 @@ export default function Play() {
       toast.error('Please pick a choice')
     }
     else{
-      // setIsPlaying(true)  
-      socket.emit('makeMove', {id:socket.userId,roomId:router.query.roomID,move:player}) 
-      // setComputer(choices[Math.floor(Math.random()*choices.length)])
-      // setTimeout(()=>{  
-      //   setIsPlaying(false)
-      //   setIsFinished(true)     
-      // },3000)
+      setIsPlaying(true)  
+      setComputer(choices[Math.floor(Math.random()*choices.length)])
+      setTimeout(()=>{  
+        setIsPlaying(false)
+        setIsFinished(true)     
+      },3000)
 
-      // setTimeout(()=>{
-      //   setComputer('')
-      //   setPlayer('')
-      //   setResult('')
-      //   setIsFinished(false)
-      // },6000)
+      setTimeout(()=>{
+        setComputer('')
+        setPlayer('')
+        setResult('')
+        setIsFinished(false)
+      },6000)
   
     }
   }
