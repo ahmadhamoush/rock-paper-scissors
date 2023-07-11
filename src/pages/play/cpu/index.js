@@ -1,12 +1,11 @@
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFistRaised, faHand, faHandBackFist, faHandFist, faHandScissors, faL } from '@fortawesome/free-solid-svg-icons'
+import { faFistRaised, faHand, faHandBackFist, faHandScissors, faUndo } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { toast , Toaster} from 'react-hot-toast'
 import { useRouter } from 'next/router'
 
-let socket;
 export default function Play() {
 
   const router = useRouter()
@@ -16,13 +15,15 @@ export default function Play() {
   const[player,setPlayer] = useState('')
   const[computer,setComputer] = useState('')
   const[result,setResult] = useState('')
+  const[timer,setTimer] = useState(0)
+  const[playerScore,setPlayerScore] = useState(0)
+  const[cpuScore,setCPUscore] = useState(0)
   const[isPlaying,setIsPlaying] = useState(false)
   const[isFinished,setIsFinished] = useState(false)
     
   useEffect(() => {
-    if (isFinished) {
-      setResult(getResult());
-    }
+  
+
     if (result !== '' && isFinished) {
       toast.success(result)
     }  
@@ -39,10 +40,25 @@ export default function Play() {
       setComputer(choices[Math.floor(Math.random()*choices.length)])
       setTimeout(()=>{  
         setIsPlaying(false)
-        setIsFinished(true)     
+        setIsFinished(true)   
+        setResult(getResult());  
       },3000)
 
+     
+      setTimeout(()=>{  
+        setTimer(3)
+      },3000)
+      setTimeout(()=>{  
+        setTimer(2)
+      },4000)
+
+      setTimeout(()=>{  
+        setTimer(1)
+      },5000)
+
+
       setTimeout(()=>{
+        setTimer(0)
         setComputer('')
         setPlayer('')
         setResult('')
@@ -53,18 +69,23 @@ export default function Play() {
   }
 
   const getResult = ()=>{
-
     if(player === computer){
       return "It's a tie!"
     }
     else if((player === 'rock' && computer === 'scissors') ||
     (player === 'paper' && computer === 'rock') ||
     (player === 'scissors' && computer === 'paper')){
+    setPlayerScore(prev=>prev + 1)
       return 'You win!'
     }
     else{
+        setCPUscore(prev=>prev + 1)
       return 'Computer wins!'
     }
+  }
+  const reset = ()=>{
+    setCPUscore(0)
+    setPlayer(0)
   }
   return (
     <>
@@ -75,9 +96,13 @@ export default function Play() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-
+    <FontAwesomeIcon onClick={reset} className={styles.reset} icon={faUndo} />
         <Toaster />
         <h1>Rock Paper Scissors Shoot!</h1>
+  <div className={styles.scores}>
+  <h1>Player {playerScore}</h1>
+        <h1>CPU {cpuScore}</h1>
+  </div>
     <div className={styles.hands}>
       {/* Player hand */}
     {!isFinished && <FontAwesomeIcon className={`${styles.fist} ${isPlaying && styles.leftHandAnime}`} icon={faHandBackFist} />}
@@ -98,6 +123,10 @@ export default function Play() {
     </div>
     <button onClick={shoot} >{isPlaying ? 'Playing...' : 'Shoot'}</button>
     </div> 
+
+    {timer > 0 && <div className={styles.timer}>
+            <p>{timer}</p>
+        </div>}
       </main>
     </>
   )
