@@ -57,7 +57,7 @@
 .wrapper .icon{
   width: 11vw;
   height: 11vh;
-  margin: 0 2px;
+  margin: 0 5px;
   color:#1e1e1e;
   cursor: pointer;
   transition: .3s ease-in-out;
@@ -118,12 +118,17 @@
   justify-content: space-between;
   width: 100%;
 }
+
 .reset{
-  position: absolute;
-  right:50px;
-  top:30px;
   cursor: pointer;
   font-size: 2rem;
+}
+.header{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 @keyframes leftHandAnime {
   0%{

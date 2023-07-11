@@ -1,11 +1,12 @@
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFistRaised, faHand, faHandBackFist, faHandScissors, faUndo } from '@fortawesome/free-solid-svg-icons'
+import { faFistRaised, faHand, faHandBackFist, faHandFist, faHandScissors, faL, faUndo } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { toast , Toaster} from 'react-hot-toast'
 import { useRouter } from 'next/router'
 
+let socket;
 export default function Play() {
 
   const router = useRouter()
@@ -22,12 +23,19 @@ export default function Play() {
   const[isFinished,setIsFinished] = useState(false)
     
   useEffect(() => {
-  
-
-    if (result !== '' && isFinished) {
-      toast.success(result)
-    }  
-  }, [isFinished,result]);
+    if (isFinished) {
+      setResult(getResult());
+      if (result !== '') {
+        toast.success(result)
+        if(result === 'You win!'){
+            setPlayerScore(prev=>prev + 1)
+        }
+        else  if(result === 'You win!'){
+            setCPUscore(prev=>prev + 1)
+        }
+      }  
+    }
+  }, [isFinished,result,setResult]);
 
 
   const shoot = ()=>{
@@ -40,8 +48,7 @@ export default function Play() {
       setComputer(choices[Math.floor(Math.random()*choices.length)])
       setTimeout(()=>{  
         setIsPlaying(false)
-        setIsFinished(true)   
-        setResult(getResult());  
+        setIsFinished(true)     
       },3000)
 
      
@@ -75,7 +82,6 @@ export default function Play() {
     else if((player === 'rock' && computer === 'scissors') ||
     (player === 'paper' && computer === 'rock') ||
     (player === 'scissors' && computer === 'paper')){
-    setPlayerScore(prev=>prev + 1)
       return 'You win!'
     }
     else{
@@ -96,12 +102,15 @@ export default function Play() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-    <FontAwesomeIcon onClick={reset} className={styles.reset} icon={faUndo} />
         <Toaster />
-        <h1>Rock Paper Scissors Shoot!</h1>
+       
+    <div className={styles.header}>
+    <h1>Rock Paper Scissors Shoot!</h1>
+        <FontAwesomeIcon icon={faUndo} onClick={reset} className={styles.reset} />
+    </div>
   <div className={styles.scores}>
-  <h1>Player {playerScore}</h1>
-        <h1>CPU {cpuScore}</h1>
+  <h3>Player {playerScore}</h3>
+        <h3>CPU {cpuScore}</h3>
   </div>
     <div className={styles.hands}>
       {/* Player hand */}
